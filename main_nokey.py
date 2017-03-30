@@ -5,12 +5,15 @@ from flask_wtf.recaptcha import RecaptchaField
 from wtforms.fields.html5 import EmailField
 from wtforms import validators
 from flask_wtf.csrf import CSRFProtect
-from mailchimp3 import MailChimp
+import json
+import requests
 
-weekly_client = MailChimp('MailChimp_USERNAME', 'MailChimp_API_Key')
-SECRET_KEY = 'enter your key here'
-RECAPTCHA_PUBLIC_KEY = "enter your key here"
-RECAPTCHA_PRIVATE_KEY = "enter your key here"
+
+URL = "https://<DC>.api.mailchimp.com/3.0/lists/<List ID>/members"
+SECRET_KEY = '<SECRET_KEY>'
+RECAPTCHA_PUBLIC_KEY = "<RECAPTCHA_PUBLIC_KEY>"
+RECAPTCHA_PRIVATE_KEY = "<RECAPTCHA_PRIVATE_KEY>"
+
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
@@ -29,14 +32,9 @@ def index(form=None):
     return render_template('form_submit.html', form=form)
 
 
-@app.route('/success')
-def success():
-    return 'Congratulations, you\'ve successfully subscribed CCNS Weekly'
-
-
 @app.route('/failed')
 def failed():
-    return 'Sorry, but the action failed, please try again'
+    return render_template('form_failed.html') 
 
 
 @app.route('/subscribe', methods=['GET', 'POST'])
@@ -47,15 +45,15 @@ def subscribe():
             email = form.email.data
         else:
             return failed()
-        weekly_client.lists.members.create('8f670626ea', {'email_address': email, 'status': 'subscribed',})
-        return render_template('form_success.html', email=email)
-        # do_subscribe(request.form['user_email'])
+        post_data = {'email_address': email, 'status': 'subscribed'}
+        auth = ('user', '<API_KEY>')
+        r = requests.post(URL, data=json.dumps(post_data), auth=auth)
+        if r.status_code == 200:
+            return render_template('form_success.html', email=email)
+        else:
+            return failed()
     else:
         return redirect(url_for('index'), code=302)
-
-
-def do_subscribe(email):
-    return render_template('form_success.html', email=email)
 
 
 if __name__ == '__main__':
