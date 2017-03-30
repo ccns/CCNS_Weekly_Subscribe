@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <title>CCNS 週刊訂閱系統</title>
+    </head>
+    <body>
+        <h1>CCNS Weekly 訂閱系統</h1>
+        <form method="post" action="{{ url_for('subscribe') }}">
+            {{ form.csrf_token }}
+            <label for="email">請在此輸入你要訂閱的 E-Mail</label>
+            {{ form.email }}
+            {{ form.recaptcha }}
+            <!-- <input type="text" name="user_email" /><br /> -->
+            <input type="submit" />
+        </form>
+    </body>
+</html>
