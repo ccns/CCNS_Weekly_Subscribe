@@ -94,5 +94,3 @@ ccns_weekly_subscribe/
 # Rope project settings
 .ropeproject
 
-# secure main.py
-main.py

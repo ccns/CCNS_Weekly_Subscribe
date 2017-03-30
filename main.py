@@ -1,18 +1,16 @@
-import os
+import json, os, requests
 from flask import Flask, redirect, request, render_template, url_for
 from flask_wtf import FlaskForm
 from flask_wtf.recaptcha import RecaptchaField
 from wtforms.fields.html5 import EmailField
 from wtforms import validators
 from flask_wtf.csrf import CSRFProtect
-import json
-import requests
 
 
-URL = "https://<DC>.api.mailchimp.com/3.0/lists/<List ID>/members"
+URL = 'https://<DC>.api.mailchimp.com/3.0/lists/<List ID>/members'
 SECRET_KEY = '<SECRET_KEY>'
-RECAPTCHA_PUBLIC_KEY = "<RECAPTCHA_PUBLIC_KEY>"
-RECAPTCHA_PRIVATE_KEY = "<RECAPTCHA_PRIVATE_KEY>"
+RECAPTCHA_PUBLIC_KEY = '<RECAPTCHA_PUBLIC_KEY>'
+RECAPTCHA_PRIVATE_KEY = '<RECAPTCHA_PRIVATE_KEY>'
 
 
 app = Flask(__name__)
@@ -41,7 +39,7 @@ def failed():
 def subscribe():
     if request.method == 'POST':
         form = EmailForm(request.form)
-        if form.validate_on_submit():
+        if form.validate():
             email = form.email.data
         else:
             return failed()

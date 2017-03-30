@@ -1,16 +1,39 @@
+<!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>CCNS 週刊訂閱系統</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <!-- Flat UI CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css">
+        <!-- Noto Sans Font -->
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
-        <h1>CCNS Weekly 訂閱系統</h1>
-        <form method="post" action="{{ url_for('subscribe') }}">
-            {{ form.csrf_token }}
-            <label for="email">請在此輸入你要訂閱的 E-Mail</label>
-            {{ form.email }}
-            {{ form.recaptcha }}
-            <!-- <input type="text" name="user_email" /><br /> -->
-            <input type="submit" />
-        </form>
+        <div class="container">
+            <div class="subscribe col-md-8 col-md-offset-2">
+                <div class="col-md-8 col-md-offset-2">
+                    <h3 class="text-left">CCNS Weekly 訂閱系統</h3>
+                    <form method="post" action="{{ url_for('subscribe') }}" class="subscribe-form">
+                        {{ form.csrf_token }}
+                        <div class="form-group">
+                            <label for="email">請在此輸入你要訂閱的 E-Mail</label>
+                            {{ form.email(class_="form-control") }}
+                        </div>
+                        {{ form.recaptcha }}
+                        <button class="btn btn-primary subscribe" type="submit">立即訂閱</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- jQuery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     </body>
 </html>
